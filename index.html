@@ -25,7 +25,7 @@
           <p class="text-[11px] font-medium text-emerald-400">Culinary Itinerary Hub</p>
         </div>
       </div>
-      <span class="text-xs font-mono text-slate-400 bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">2 Recipes</span>
+      <span id="recipeCount" class="text-xs font-mono text-slate-400 bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800"></span>
     </div>
   </header>
 
@@ -33,59 +33,66 @@
   <main class="max-w-2xl mx-auto w-full px-4 sm:px-6 pt-6 flex-1 flex flex-col gap-4">
     <div>
       <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Select A Meal Itinerary</h2>
-      <p class="text-sm text-slate-300">Choose a recipe to launch its single-threaded kitchen guide and timer.</p>
+      <p class="text-sm text-slate-300">Choose a recipe to launch its single-threaded kitchen guide and timers.</p>
     </div>
 
-    <!-- CARD 1 -->
-    <a href="grilled-pork-chops-pesto.html" class="group block bg-slate-900 border border-slate-800 hover:border-emerald-500/60 rounded-2xl p-5 transition-all shadow-sm hover:shadow-lg hover:shadow-emerald-950/30">
-      <div class="flex items-start justify-between gap-3">
-        <div>
-          <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
-            Grill & Pasta
-          </span>
-          <h3 class="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors">
-            Thick Pork Chops & Mushroom Ravioli
-          </h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-            Gotham Greens Vegan Pesto, upright fat-rendering on a two-zone fire, and resting-timed pasta boil.
-          </p>
-        </div>
-        <div class="w-8 h-8 rounded-full bg-slate-800 group-hover:bg-emerald-500 group-hover:text-white flex items-center justify-center text-slate-400 transition-all shrink-0 mt-1">
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </div>
-      </div>
-      <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center gap-4 text-xs font-mono text-slate-400">
-        <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5 text-emerald-400"></i> Est. 28 min</span>
-        <span class="flex items-center gap-1.5"><i data-lucide="list-ordered" class="w-3.5 h-3.5 text-emerald-400"></i> 5 Legs</span>
-      </div>
-    </a>
-
-    <!-- CARD 2 -->
-    <a href="braised-pork-chops-sugo.html" class="group block bg-slate-900 border border-slate-800 hover:border-emerald-500/60 rounded-2xl p-5 transition-all shadow-sm hover:shadow-lg hover:shadow-emerald-950/30">
-      <div class="flex items-start justify-between gap-3">
-        <div>
-          <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-2">
-            Skillet Braise & Rigatoni
-          </span>
-          <h3 class="text-lg font-bold text-white group-hover:text-amber-300 transition-colors">
-            Pork Chops in Rustic Calabrian Sugo
-          </h3>
-          <p class="text-xs text-slate-400 mt-1 leading-relaxed">
-            San Marzano tomatoes, cremini mushrooms, slow Dutch oven braise, and rigatoni tossed in pan sauce.
-          </p>
-        </div>
-        <div class="w-8 h-8 rounded-full bg-slate-800 group-hover:bg-amber-500 group-hover:text-white flex items-center justify-center text-slate-400 transition-all shrink-0 mt-1">
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </div>
-      </div>
-      <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center gap-4 text-xs font-mono text-slate-400">
-        <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i> Est. 45 min</span>
-        <span class="flex items-center gap-1.5"><i data-lucide="list-ordered" class="w-3.5 h-3.5 text-amber-400"></i> 5 Legs</span>
-      </div>
-    </a>
+    <!-- DYNAMIC CONTAINER -->
+    <div id="recipeCardsContainer" class="flex flex-col gap-4"></div>
   </main>
 
   <script>
+    // =========================================================================
+    // RECIPES CATALOG
+    // To add a new meal, just paste 6 lines here:
+    // =========================================================================
+    const recipes = [
+      {
+        title: "Thick Pork Chops & Mushroom Ravioli",
+        tag: "Grill & Pasta",
+        desc: "Gotham Greens Vegan Pesto, upright fat-rendering on a two-zone fire, and resting-timed pasta boil.",
+        time: "Est. 28 min",
+        legs: "5 Legs",
+        file: "grilled-pork-chops-pesto.html"
+      },
+      {
+        title: "Pork Chops in Rustic Calabrian Sugo",
+        tag: "Skillet Braise & Rigatoni",
+        desc: "San Marzano tomatoes, cremini mushrooms, slow Dutch oven braise, and rigatoni tossed in pan sauce.",
+        time: "Est. 45 min",
+        legs: "5 Legs",
+        file: "braised-pork-chops-sugo.html"
+      }
+    ];
+
+    // --- AUTO-RENDER CARDS ---
+    document.getElementById("recipeCount").textContent = `${recipes.length} Recipes`;
+    const container = document.getElementById("recipeCardsContainer");
+
+    container.innerHTML = recipes.map(r => `
+      <a href="${r.file}" class="group block bg-slate-900 border border-slate-800 hover:border-emerald-500/60 rounded-2xl p-5 transition-all shadow-sm hover:shadow-lg hover:shadow-emerald-950/30">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2">
+              ${r.tag}
+            </span>
+            <h3 class="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors">
+              ${r.title}
+            </h3>
+            <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+              ${r.desc}
+            </p>
+          </div>
+          <div class="w-8 h-8 rounded-full bg-slate-800 group-hover:bg-emerald-500 group-hover:text-white flex items-center justify-center text-slate-400 transition-all shrink-0 mt-1">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </div>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center gap-4 text-xs font-mono text-slate-400">
+          <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5 text-emerald-400"></i> ${r.time}</span>
+          <span class="flex items-center gap-1.5"><i data-lucide="list-ordered" class="w-3.5 h-3.5 text-emerald-400"></i> ${r.legs}</span>
+        </div>
+      </a>
+    `).join("");
+
     lucide.createIcons();
   </script>
 </body>
