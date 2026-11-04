@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pork Chops in Calabrian Sugo | Chef Pacer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    .font-mono-numbers { font-family: 'JetBrains Mono', monospace; }
+    .fade-enter { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased pb-12">
+
+  <!-- TOP APP BAR -->
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 sm:px-6">
+    <div class="max-w-2xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white transition">
+        <i data-lucide="chevron-left" class="w-4 h-4 text-amber-400"></i>
+        <span>Recipe Hub</span>
+      </a>
+      <span class="text-xs font-mono text-amber-400 bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">Skillet Braiser</span>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW -->
+  <main class="max-w-2xl mx-auto w-full px-4 sm:px-6 pt-5 flex-1 flex flex-col gap-4">
+
+    <!-- OVERVIEW CARD -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+      <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 mb-1">
+        Skillet Braise & Rigatoni
+      </span>
+      <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">Pork Chops in Rustic Calabrian Sugo</h2>
+      <p class="text-xs text-slate-400 mt-1">San Marzano tomatoes, cremini mushrooms, slow Dutch oven braise, and rigatoni tossed in pan sauce.</p>
+
+      <div class="mt-4 pt-3 border-t border-slate-800/60">
+        <div class="flex justify-between items-center text-[11px] font-semibold text-slate-400 mb-2">
+          <span>Meal Itinerary Cadence</span>
+          <span id="stepCounter" class="text-amber-400 font-mono-numbers">Leg 1 of 5</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden flex p-0.5">
+          <div id="progressBar" class="bg-gradient-to-r from-amber-500 to-orange-400 h-full rounded-full transition-all duration-300" style="width: 20%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRE-FLIGHT AUDIT ACCORDION -->
+    <details class="group bg-slate-900/60 border border-slate-800 rounded-xl overflow-hidden text-xs">
+      <summary class="px-4 py-3 flex items-center justify-between cursor-pointer text-slate-300 font-semibold select-none hover:bg-slate-800/50">
+        <div class="flex items-center gap-2">
+          <i data-lucide="clipboard-check" class="w-4 h-4 text-amber-400"></i>
+          <span>Mise en Place & Equipment Checklist</span>
+        </div>
+        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+      </summary>
+      <div class="px-4 pb-4 pt-2 border-t border-slate-800/80 grid sm:grid-cols-2 gap-4 text-slate-300">
+        <div>
+          <h4 class="font-bold text-[11px] uppercase tracking-wider text-slate-400 mb-2">Ingredients</h4>
+          <ul class="space-y-1.5">
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0"></i><span>2 bone-in center-cut pork chops</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0"></i><span>8 oz rigatoni or pappardelle pasta</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0"></i><span>1 can (28 oz) San Marzano crushed tomatoes</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0"></i><span>8 oz cremini mushrooms, sliced</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0"></i><span>3 cloves garlic, 1/2 red onion, white wine</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-amber-400 mt-0.5 shrink-0"></i><span>Calabrian chili flakes, fresh basil, Pecorino</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-[11px] uppercase tracking-wider text-slate-400 mb-2">Hardware Setup</h4>
+          <ul class="space-y-1.5">
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Dutch oven or deep heavy skillet with lid</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Pasta pot for rigatoni with salted water</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Wooden spoon & sturdy tongs</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Coffee mug (for starchy pasta water)</span></li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- STEP RUNNER -->
+    <div id="stepCard" class="bg-gradient-to-b from-slate-900 to-slate-900/80 border border-slate-800 rounded-3xl p-5 sm:p-7 shadow-xl flex-1 flex flex-col justify-between fade-enter">
+      <div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <span id="stepPhaseTag" class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            Phase 1: Sear
+          </span>
+          <div id="stepZoneTag" class="flex items-center gap-1.5 text-xs font-medium text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-500/20">
+            <i data-lucide="flame" class="w-3.5 h-3.5"></i>
+            <span>Medium-High Dutch Oven</span>
+          </div>
+        </div>
+
+        <h3 id="stepTitle" class="text-xl sm:text-2xl font-extrabold text-white tracking-tight mt-1"></h3>
+        <div id="stepInstruction" class="text-slate-300 text-sm sm:text-base leading-relaxed mt-3 space-y-2"></div>
+
+        <div class="mt-5 p-4 rounded-xl bg-slate-950/70 border border-slate-800 text-xs sm:text-sm">
+          <div class="flex items-center gap-2 font-bold text-amber-400 mb-1.5">
+            <i data-lucide="eye" class="w-4 h-4"></i>
+            <span>Sensory Exit Criteria</span>
+          </div>
+          <p id="stepSensory" class="text-slate-300 leading-normal"></p>
+        </div>
+      </div>
+
+      <!-- TIMER SECTION -->
+      <div id="timerContainer" class="mt-6 pt-5 border-t border-slate-800/80">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-amber-400">
+              <i data-lucide="timer" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Phase Timer</div>
+              <div id="timerDisplay" class="text-3xl font-mono-numbers font-bold text-white tracking-wider">00:00</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button id="timerToggleBtn" class="flex-1 sm:flex-initial px-5 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md shadow-amber-950">
+              <i data-lucide="play" class="w-4 h-4"></i>
+              <span>Start</span>
+            </button>
+            <button id="timerResetBtn" class="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition flex items-center justify-center">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- NAVIGATION -->
+      <div class="mt-6 pt-4 flex items-center justify-between gap-3">
+        <button id="prevBtn" class="px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Previous</span>
+        </button>
+        <button id="nextBtn" class="flex-1 sm:flex-initial px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-500 hover:from-amber-500 hover:to-orange-400 text-white rounded-xl text-xs font-extrabold tracking-wide transition flex items-center justify-center gap-2 shadow-lg shadow-amber-950/60">
+          <span>Complete Leg & Advance</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const steps = [
+      {
+        phase: "Phase 1: Sear & Fond Development",
+        zone: "Medium-High Dutch Oven",
+        title: "Hard Sear Chops in Pan",
+        instruction: "Heat 1 tablespoon olive oil in your Dutch oven over medium-high heat until shimmering. Season both sides of the pork chops with salt and pepper.<br><br>Sear hard for 4 to 5 minutes per side until deeply browned. Transfer chops to a plate (they will finish cooking in the braise). Leave the rendered fat and browned bits in the pot.",
+        sensory: "Deep brown crust on both flat sides with rich caramelized fond coating the bottom of the pan.",
+        timerSeconds: 300
+      },
+      {
+        phase: "Phase 2: Aromatics & Deglaze",
+        zone: "Medium Heat",
+        title: "Sauté Mushrooms & Deglaze with Wine",
+        instruction: "Add diced onion and sliced cremini mushrooms directly into the pork fat. Sauté for 4 minutes until mushrooms take on color. Stir in minced garlic and Calabrian chili flakes for 1 minute.<br><br>Pour in 1/2 cup white wine, using a wooden spoon to firmly scrape all the browned fond off the pan bottom. Simmer until wine reduces by half.",
+        sensory: "Aromatics turn soft and fragrant; pan bottom is completely clean of stuck-on fond.",
+        timerSeconds: 300
+      },
+      {
+        phase: "Phase 3: The Low Braise",
+        zone: "Low Simmer (Lid Closed)",
+        title: "Simmer Chops in San Marzano Sugo",
+        instruction: "Pour in hand-crushed tomatoes and a pinch of salt. Nestle the pork chops and any resting juices back down into the sauce.<br><br>Cover tightly with the lid, lower heat to low, and simmer gently for 25 minutes so the meat tenderizes and infuses the sugo.",
+        sensory: "Sauce bubbles lazily around the chops; meat yields easily to a gentle poke with a fork.",
+        timerSeconds: 1500
+      },
+      {
+        phase: "Phase 4: Pasta Boil & Sauce Toss",
+        zone: "Boiling Pot + Dutch Oven",
+        title: "Boil Rigatoni & Marry with Sugo",
+        instruction: "During the final 10 minutes of braising, drop rigatoni into salted boiling water. Cook until just shy of al dente (about 9 minutes).<br><br>Lift the pork chops out onto a board. Fold drained pasta directly into the bubbling sugo with a splash of hot pasta cooking water. Toss vigorously with grated Pecorino Romano.",
+        sensory: "Sugo thickens and clings tightly inside and outside the rigatoni tubes.",
+        timerSeconds: 540
+      },
+      {
+        phase: "Phase 5: Plating & Service",
+        zone: "Warm Pasta Bowls",
+        title: "Plate Chops over Rich Rigatoni",
+        instruction: "Mound pasta into warm shallow bowls and place a braised pork chop right on top.<br><br>Ladle warm mushroom sugo generously over the chop. Garnish with torn fresh basil leaves and extra Pecorino Romano.",
+        sensory: "Pork is succulent and pull-apart tender; pasta is glossy and richly sauced.",
+        timerSeconds: 0
+      }
+    ];
+
+    let currentStepIndex = 0;
+    let timerInterval = null;
+    let timerRemaining = 0;
+    let isTimerRunning = false;
+
+    function playKitchenChime() {
+      try {
+        const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+        const now = Tone.now();
+        synth.triggerAttackRelease(["E5", "G#5", "B5"], "8n", now);
+        synth.triggerAttackRelease(["B5", "E6"], "4n", now + 0.2);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    const stepCounter = document.getElementById("stepCounter");
+    const progressBar = document.getElementById("progressBar");
+    const stepCard = document.getElementById("stepCard");
+    const stepPhaseTag = document.getElementById("stepPhaseTag");
+    const stepZoneTag = document.getElementById("stepZoneTag");
+    const stepTitle = document.getElementById("stepTitle");
+    const stepInstruction = document.getElementById("stepInstruction");
+    const stepSensory = document.getElementById("stepSensory");
+    const timerContainer = document.getElementById("timerContainer");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const timerToggleBtn = document.getElementById("timerToggleBtn");
+    const timerResetBtn = document.getElementById("timerResetBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function renderStep() {
+      const step = steps[currentStepIndex];
+      stepCard.classList.remove("fade-enter");
+      void stepCard.offsetWidth;
+      stepCard.classList.add("fade-enter");
+
+      stepCounter.textContent = `Leg ${currentStepIndex + 1} of ${steps.length}`;
+      progressBar.style.width = `${((currentStepIndex + 1) / steps.length) * 100}%`;
+
+      stepPhaseTag.textContent = step.phase;
+      stepZoneTag.querySelector("span").textContent = step.zone;
+      stepTitle.textContent = step.title;
+      stepInstruction.innerHTML = step.instruction;
+      stepSensory.textContent = step.sensory;
+
+      if (step.timerSeconds > 0) {
+        timerContainer.classList.remove("hidden");
+        timerRemaining = step.timerSeconds;
+        updateTimerDisplay();
+      } else {
+        timerContainer.classList.add("hidden");
+        timerRemaining = 0;
+      }
+
+      prevBtn.disabled = currentStepIndex === 0;
+      if (currentStepIndex === steps.length - 1) {
+        nextBtn.innerHTML = `<span>Plate & Serve</span> <i data-lucide="check" class="w-4 h-4"></i>`;
+      } else {
+        nextBtn.innerHTML = `<span>Complete Leg & Advance</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+      }
+
+      lucide.createIcons();
+    }
+
+    function toggleTimer() {
+      if (isTimerRunning) pauseTimer();
+      else startTimer();
+    }
+
+    function startTimer() {
+      if (timerRemaining <= 0) return;
+      isTimerRunning = true;
+      timerToggleBtn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i><span>Pause</span>`;
+      timerToggleBtn.classList.replace("bg-amber-600", "bg-emerald-600");
+      timerInterval = setInterval(() => {
+        timerRemaining--;
+        updateTimerDisplay();
+        if (timerRemaining <= 0) {
+          pauseTimer();
+          playKitchenChime();
+        }
+      }, 1000);
+      lucide.createIcons();
+    }
+
+    function pauseTimer() {
+      isTimerRunning = false;
+      clearInterval(timerInterval);
+      timerToggleBtn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i><span>Start</span>`;
+      timerToggleBtn.classList.replace("bg-emerald-600", "bg-amber-600");
+      lucide.createIcons();
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      timerRemaining = steps[currentStepIndex].timerSeconds || 0;
+      updateTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+      const m = Math.floor(timerRemaining / 60);
+      const s = timerRemaining % 60;
+      timerDisplay.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (currentStepIndex > 0) {
+        currentStepIndex--;
+        resetTimer();
+        renderStep();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentStepIndex < steps.length - 1) {
+        currentStepIndex++;
+        resetTimer();
+        renderStep();
+      } else {
+        alert("Dinner is ready! Enjoy the meal.");
+      }
+    });
+
+    timerToggleBtn.addEventListener("click", toggleTimer);
+    timerResetBtn.addEventListener("click", resetTimer);
+
+    renderStep();
+  </script>
+</body>
+</html>
