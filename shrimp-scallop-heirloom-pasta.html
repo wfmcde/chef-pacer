@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Seafood & Heirloom Tomato Pasta | Chef Pacer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    .font-mono-numbers { font-family: 'JetBrains Mono', monospace; }
+    .fade-enter { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased pb-12">
+
+  <!-- TOP APP BAR -->
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 sm:px-6">
+    <div class="max-w-2xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white transition">
+        <i data-lucide="chevron-left" class="w-4 h-4 text-cyan-400"></i>
+        <span>Recipe Hub</span>
+      </a>
+      <span class="text-xs font-mono text-cyan-400 bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">Seafood Pacer</span>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW -->
+  <main class="max-w-2xl mx-auto w-full px-4 sm:px-6 pt-5 flex-1 flex flex-col gap-4">
+
+    <!-- OVERVIEW CARD -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+      <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 mb-1">
+        Skillet Seafood & Pasta
+      </span>
+      <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">Pan-Seared Shrimp, Scallops & Heirloom Tomatoes</h2>
+      <p class="text-xs text-slate-400 mt-1">Caramelized cremini mushrooms, juicy burst heirloom tomatoes, and pasta tossed with pesto.</p>
+
+      <div class="mt-4 pt-3 border-t border-slate-800/60">
+        <div class="flex justify-between items-center text-[11px] font-semibold text-slate-400 mb-2">
+          <span>Meal Itinerary Cadence</span>
+          <span id="stepCounter" class="text-cyan-400 font-mono-numbers">Leg 1 of 5</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden flex p-0.5">
+          <div id="progressBar" class="bg-gradient-to-r from-cyan-500 to-teal-400 h-full rounded-full transition-all duration-300" style="width: 20%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRE-FLIGHT AUDIT ACCORDION -->
+    <details class="group bg-slate-900/60 border border-slate-800 rounded-xl overflow-hidden text-xs">
+      <summary class="px-4 py-3 flex items-center justify-between cursor-pointer text-slate-300 font-semibold select-none hover:bg-slate-800/50">
+        <div class="flex items-center gap-2">
+          <i data-lucide="clipboard-check" class="w-4 h-4 text-cyan-400"></i>
+          <span>Mise en Place & Equipment Checklist</span>
+        </div>
+        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+      </summary>
+      <div class="px-4 pb-4 pt-2 border-t border-slate-800/80 grid sm:grid-cols-2 gap-4 text-slate-300">
+        <div>
+          <h4 class="font-bold text-[11px] uppercase tracking-wider text-slate-400 mb-2">Ingredients</h4>
+          <ul class="space-y-1.5">
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>3/4 lb peeled shrimp & bay scallops (patted dry)</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>8 oz pasta (linguine, fettuccine, or farfalle)</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>2 ripe heirloom tomatoes (diced) or sweet cherry tomatoes</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>8 oz cremini mushrooms, sliced</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>3 cloves garlic, olive oil, splash of dry white wine</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>Basil pesto & reserved starchy pasta water</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-[11px] uppercase tracking-wider text-slate-400 mb-2">Hardware Setup</h4>
+          <ul class="space-y-1.5">
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Large stainless steel or cast-iron skillet</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Large pasta pot with salted boiling water</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Fish spatula or tongs & clean holding plate</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Coffee mug (for reserved pasta water)</span></li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- STEP RUNNER -->
+    <div id="stepCard" class="bg-gradient-to-b from-slate-900 to-slate-900/80 border border-slate-800 rounded-3xl p-5 sm:p-7 shadow-xl flex-1 flex flex-col justify-between fade-enter">
+      <div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <span id="stepPhaseTag" class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+            Phase 1: High Heat Sear
+          </span>
+          <div id="stepZoneTag" class="flex items-center gap-1.5 text-xs font-medium text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
+            <i data-lucide="flame" class="w-3.5 h-3.5"></i>
+            <span>Medium-High Skillet</span>
+          </div>
+        </div>
+
+        <h3 id="stepTitle" class="text-xl sm:text-2xl font-extrabold text-white tracking-tight mt-1"></h3>
+        <div id="stepInstruction" class="text-slate-300 text-sm sm:text-base leading-relaxed mt-3 space-y-2"></div>
+
+        <div class="mt-5 p-4 rounded-xl bg-slate-950/70 border border-slate-800 text-xs sm:text-sm">
+          <div class="flex items-center gap-2 font-bold text-cyan-400 mb-1.5">
+            <i data-lucide="eye" class="w-4 h-4"></i>
+            <span>Sensory Exit Criteria</span>
+          </div>
+          <p id="stepSensory" class="text-slate-300 leading-normal"></p>
+        </div>
+      </div>
+
+      <!-- TIMER SECTION -->
+      <div id="timerContainer" class="mt-6 pt-5 border-t border-slate-800/80">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-cyan-400">
+              <i data-lucide="timer" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Phase Timer</div>
+              <div id="timerDisplay" class="text-3xl font-mono-numbers font-bold text-white tracking-wider">00:00</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button id="timerToggleBtn" class="flex-1 sm:flex-initial px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md shadow-cyan-950">
+              <i data-lucide="play" class="w-4 h-4"></i>
+              <span>Start</span>
+            </button>
+            <button id="timerResetBtn" class="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition flex items-center justify-center">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- NAVIGATION -->
+      <div class="mt-6 pt-4 flex items-center justify-between gap-3">
+        <button id="prevBtn" class="px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Previous</span>
+        </button>
+        <button id="nextBtn" class="flex-1 sm:flex-initial px-6 py-3 bg-gradient-to-r from-cyan-600 to-teal-500 hover:from-cyan-500 hover:to-teal-400 text-white rounded-xl text-xs font-extrabold tracking-wide transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-950/60">
+          <span>Complete Leg & Advance</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const steps = [
+      {
+        phase: "Phase 1: Flash Sear Seafood",
+        zone: "Medium-High Skillet",
+        title: "Sear Shrimp & Scallops Quick",
+        instruction: "Ensure shrimp and scallops are completely dry. Season lightly with salt and pepper.<br><br>Heat 1 tablespoon olive oil in the skillet until shimmering. Sear seafood for 90 seconds without moving, flip, and cook 60 seconds more. Transfer immediately to a clean plate (do not overcook; they finish in the warm sauce later).",
+        sensory: "Shrimp curl into a loose 'C' shape with pink-golden edges; scallops turn opaque with light golden crust.",
+        timerSeconds: 150
+      },
+      {
+        phase: "Phase 2: Mushrooms & Aromatics",
+        zone: "Medium Skillet",
+        title: "Brown Mushrooms & Soften Garlic",
+        instruction: "Add another splash of olive oil to the hot skillet. Add sliced cremini mushrooms in a single layer and let brown for 3 to 4 minutes undisturbed.<br><br>Stir in minced garlic for 30 to 45 seconds until aromatic. Pour in a splash of white wine to scrape up any seafood fond from the bottom.",
+        sensory: "Mushrooms develop deep golden patches; garlic smells sweet and toasted without burning.",
+        timerSeconds: 240
+      },
+      {
+        phase: "Phase 3: Heirloom Tomatoes & Simmer",
+        zone: "Medium-Low Skillet",
+        title: "Warm Diced Tomatoes & Build Pan Sauce",
+        instruction: "Add diced heirloom tomatoes and a pinch of salt to the skillet. Cook gently for 3 to 4 minutes until tomatoes soften and release their sweet, warm juices, mingling with the mushroom liquid.<br><br>Drop your pasta into rolling salted water on the back burner.",
+        sensory: "Tomatoes soften into a rustic, chunky sauce with glossy pan juices.",
+        timerSeconds: 240
+      },
+      {
+        phase: "Phase 4: Pasta Boil & Reintegration",
+        zone: "Boiling Pot + Skillet",
+        title: "Reserve Water & Reheat Seafood",
+        instruction: "Cook pasta until just shy of al dente. <strong>Crucial:</strong> Scoop out 1/2 cup hot starchy cooking water with your mug before draining.<br><br>Transfer drained pasta into the skillet. Return seared shrimp, scallops, and their accumulated plate juices into the pan. Toss gently over low heat for 1 minute.",
+        sensory: "Seafood warms through without turning rubbery; pasta absorbs the pan juices.",
+        timerSeconds: 60
+      },
+      {
+        phase: "Phase 5: Pesto Emulsion & Plating",
+        zone: "Off Heat (Warm Skillet)",
+        title: "Gloss with Pesto & Serve",
+        instruction: "Kill the heat completely. Dollop 2 to 3 tablespoons of basil pesto into the pasta along with a splash of reserved cooking water.<br><br>Toss vigorously until the pesto and starchy water combine into a silky, glossy sheen coating every noodle. Garnish with torn basil and serve immediately.",
+        sensory: "Sauce is bright green and glossy; perfectly coats the pasta and seafood without separating.",
+        timerSeconds: 0
+      }
+    ];
+
+    let currentStepIndex = 0;
+    let timerInterval = null;
+    let timerRemaining = 0;
+    let isTimerRunning = false;
+
+    function playKitchenChime() {
+      try {
+        const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+        const now = Tone.now();
+        synth.triggerAttackRelease(["E5", "G#5", "B5"], "8n", now);
+        synth.triggerAttackRelease(["B5", "E6"], "4n", now + 0.2);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    const stepCounter = document.getElementById("stepCounter");
+    const progressBar = document.getElementById("progressBar");
+    const stepCard = document.getElementById("stepCard");
+    const stepPhaseTag = document.getElementById("stepPhaseTag");
+    const stepZoneTag = document.getElementById("stepZoneTag");
+    const stepTitle = document.getElementById("stepTitle");
+    const stepInstruction = document.getElementById("stepInstruction");
+    const stepSensory = document.getElementById("stepSensory");
+    const timerContainer = document.getElementById("timerContainer");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const timerToggleBtn = document.getElementById("timerToggleBtn");
+    const timerResetBtn = document.getElementById("timerResetBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function renderStep() {
+      const step = steps[currentStepIndex];
+      stepCard.classList.remove("fade-enter");
+      void stepCard.offsetWidth;
+      stepCard.classList.add("fade-enter");
+
+      stepCounter.textContent = `Leg ${currentStepIndex + 1} of ${steps.length}`;
+      progressBar.style.width = `${((currentStepIndex + 1) / steps.length) * 100}%`;
+
+      stepPhaseTag.textContent = step.phase;
+      stepZoneTag.querySelector("span").textContent = step.zone;
+      stepTitle.textContent = step.title;
+      stepInstruction.innerHTML = step.instruction;
+      stepSensory.textContent = step.sensory;
+
+      if (step.timerSeconds > 0) {
+        timerContainer.classList.remove("hidden");
+        timerRemaining = step.timerSeconds;
+        updateTimerDisplay();
+      } else {
+        timerContainer.classList.add("hidden");
+        timerRemaining = 0;
+      }
+
+      prevBtn.disabled = currentStepIndex === 0;
+      if (currentStepIndex === steps.length - 1) {
+        nextBtn.innerHTML = `<span>Plate & Serve</span> <i data-lucide="check" class="w-4 h-4"></i>`;
+      } else {
+        nextBtn.innerHTML = `<span>Complete Leg & Advance</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+      }
+
+      lucide.createIcons();
+    }
+
+    function toggleTimer() {
+      if (isTimerRunning) pauseTimer();
+      else startTimer();
+    }
+
+    function startTimer() {
+      if (timerRemaining <= 0) return;
+      isTimerRunning = true;
+      timerToggleBtn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i><span>Pause</span>`;
+      timerToggleBtn.classList.replace("bg-cyan-600", "bg-amber-600");
+      timerInterval = setInterval(() => {
+        timerRemaining--;
+        updateTimerDisplay();
+        if (timerRemaining <= 0) {
+          pauseTimer();
+          playKitchenChime();
+        }
+      }, 1000);
+      lucide.createIcons();
+    }
+
+    function pauseTimer() {
+      isTimerRunning = false;
+      clearInterval(timerInterval);
+      timerToggleBtn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i><span>Start</span>`;
+      timerToggleBtn.classList.replace("bg-amber-600", "bg-cyan-600");
+      lucide.createIcons();
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      timerRemaining = steps[currentStepIndex].timerSeconds || 0;
+      updateTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+      const m = Math.floor(timerRemaining / 60);
+      const s = timerRemaining % 60;
+      timerDisplay.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (currentStepIndex > 0) {
+        currentStepIndex--;
+        resetTimer();
+        renderStep();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentStepIndex < steps.length - 1) {
+        currentStepIndex++;
+        resetTimer();
+        renderStep();
+      } else {
+        alert("Dinner is ready! Enjoy the fresh seafood pasta.");
+      }
+    });
+
+    timerToggleBtn.addEventListener("click", toggleTimer);
+    timerResetBtn.addEventListener("click", resetTimer);
+
+    renderStep();
+  </script>
+</body>
+</html>
