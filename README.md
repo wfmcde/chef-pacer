@@ -25,6 +25,10 @@ chef-pacer/
 ├── braised-pork-chops-sugo.html         # Dutch oven braised pork chops & rigatoni
 ├── shrimp-scallop-heirloom-pasta.html   # Flash-seared seafood & heirloom tomato pasta
 └── README.md                            # Documentation & data schema
+Adding a New Recipe
+Create the Recipe File: Duplicate an existing recipe template (e.g., grilled-pork-chops-pesto.html), rename it (e.g., cast-iron-ribeye.html), and update the checklist array and step objects.
+
+Register in index.html: Add an entry to the recipes array in index.html:
 {
   title: "Cast-Iron Ribeye & Charred Asparagus",
   category: "Steak",
