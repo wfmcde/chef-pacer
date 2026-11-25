@@ -13,6 +13,7 @@
     .font-mono-numbers { font-family: 'JetBrains Mono', monospace; }
     .fade-enter { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(0.8); cursor: pointer; }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased pb-12">
@@ -33,11 +34,33 @@
 
     <!-- OVERVIEW CARD -->
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
-      <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 mb-1">
-        Single-Pot Coastal Boil
-      </span>
-      <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">Dungeness Crab, Maine Lobster & Manila Clam Boil</h2>
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 mb-1">
+            Single-Pot Coastal Boil
+          </span>
+          <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">Dungeness Crab, Maine Lobster & Manila Clam Boil</h2>
+        </div>
+      </div>
       <p class="text-xs text-slate-400 mt-1">15.5-qt Granite Ware single-pot boil with baby red potatoes, fennel wedges, sweet corn, mushrooms, and garlic lemon butter.</p>
+
+      <!-- TARGET EAT TIME & BACKWARD SCHEDULE BAR -->
+      <div class="mt-4 p-3 rounded-xl bg-slate-950/90 border border-slate-800 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
+            <i data-lucide="clock" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <label for="targetTimeInput" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Target Eat Time</label>
+            <input id="targetTimeInput" type="time" value="17:00" class="bg-transparent text-sm font-mono-numbers font-bold text-white focus:outline-none">
+          </div>
+        </div>
+
+        <div class="text-right">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Start Leg 1 By</div>
+          <div id="kickoffTimeDisplay" class="text-sm font-mono-numbers font-extrabold text-teal-400">4:10 PM</div>
+        </div>
+      </div>
 
       <div class="mt-4 pt-3 border-t border-slate-800/60">
         <div class="flex justify-between items-center text-[11px] font-semibold text-slate-400 mb-2">
@@ -90,11 +113,11 @@
       <div>
         <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
           <span id="stepPhaseTag" class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-            Phase 1: Mise en Place
+            Leg 1: Clam Purge & Prep
           </span>
           <div id="stepZoneTag" class="flex items-center gap-1.5 text-xs font-medium text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
             <i data-lucide="flame" class="w-3.5 h-3.5"></i>
-            <span>Prep Counter (12:00 PM)</span>
+            <span>Prep Counter • 4:10 PM</span>
           </div>
         </div>
 
@@ -149,10 +172,12 @@
   </main>
 
   <script>
+    // offsetMinutesFromStart reflects parallel overlap (e.g., broth heats while clams purge; bread warms while shellfish finishes)
     const steps = [
       {
         phase: "Leg 1: Clam Purge & Prep",
-        zone: "Prep Counter (12:00 PM)",
+        zone: "Prep Counter",
+        offsetMinutes: 0,
         title: "Purge Clams & Prep Boil Vegetables",
         instruction: "Soak the <strong>1 lb Manila clams</strong> in a bowl of cold tap water with 1 tablespoon of salt for 20 minutes to purge sand, then rinse and discard any open clams that stay open when tapped.<br><br>Scrub <strong>1 lb baby red potatoes</strong> (halve larger ones). Trim stalks off the <strong>1 lb fennel bulb</strong> and cut into 6 wedges through the root end. Husk <strong>corn</strong> and snap in half. Quarter <strong>yellow onion</strong>, smash <strong>5–6 garlic cloves</strong>, halve <strong>1 lemon</strong>, wipe <strong>0.5 lb cremini mushrooms</strong> clean, and chop <strong>Italian parsley</strong>.",
         sensory: "Clams are rinsed clean and tightly closed; all vegetables and aromatics are prepped and ready beside the stove.",
@@ -160,7 +185,8 @@
       },
       {
         phase: "Leg 2: Broth Base Setup",
-        zone: "15.5-Qt Stock Pot (12:15 PM)",
+        zone: "15.5-Qt Stock Pot",
+        offsetMinutes: 15,
         title: "Set Domed Rack & Boil Seasoned Broth",
         instruction: "Place the perforated Granite Ware insert <strong>upside down (domed side up)</strong> at the bottom of the 15.5-quart pot to create a scorch-proof buffer above the burner.<br><br>Add <strong>3.5 to 4 quarts of water</strong>, <strong>1 cup dry white wine</strong>, <strong>3 to 4 tablespoons Old Bay seasoning</strong>, quartered onion, smashed garlic, and squeezed lemon halves. Cover and bring to a rolling boil over high heat.",
         sensory: "Broth reaches a vigorous, fragrant rolling boil with Old Bay and citrus aromatics.",
@@ -168,7 +194,8 @@
       },
       {
         phase: "Leg 3: Hardy Veggies",
-        zone: "Rolling Boil (12:25 PM)",
+        zone: "Rolling Boil",
+        offsetMinutes: 25,
         title: "Simmer Potatoes & Fennel Wedges",
         instruction: "Drop the <strong>baby red potatoes</strong> and <strong>fennel wedges</strong> into the boiling broth so they rest on the raised domed plate.<br><br>Cover with the lid and maintain a steady boil for <strong>8 minutes</strong> to give the denser vegetables a head start.",
         sensory: "Potatoes and fennel are submerged in steady boiling broth and beginning to soften.",
@@ -176,7 +203,8 @@
       },
       {
         phase: "Leg 4: Corn, Mushrooms & Live Lobster",
-        zone: "Covered Boil (12:33 PM)",
+        zone: "Covered Boil",
+        offsetMinutes: 33,
         title: "Add Corn, Mushrooms & Live Lobster",
         instruction: "Add the <strong>corn halves</strong> and whole <strong>cremini mushrooms</strong> to the pot.<br><br><strong>If your 2.5 lb Maine lobster is live:</strong> Place it into the boiling pot now so it gets a 5-minute head start (12–13 minutes total cook time). If pre-cooked, hold it until the next leg.",
         sensory: "Mushrooms begin soaking up broth; live lobster turns bright red as it cooks.",
@@ -184,7 +212,8 @@
       },
       {
         phase: "Leg 5: Final Shellfish Boil",
-        zone: "Covered Boil/Steam (12:38 PM)",
+        zone: "Covered Boil/Steam",
+        offsetMinutes: 38,
         title: "Layer Clams, Dungeness Crab & Shrimp",
         instruction: "Layer the <strong>1 lb Manila clams</strong>, <strong>2 pre-cooked Dungeness crabs</strong> (plus pre-cooked lobster if applicable), and <strong>0.5 lb 16/20 peeled & deveined Gulf shrimp</strong> on top of the veggies so nothing slides under the outer rim of the domed plate.<br><br>Cover tightly and cook for <strong>4 to 5 minutes</strong>. Discard any clams that fail to open.",
         sensory: "All Manila clams pop wide open, shrimp turn pink and opaque in a loose 'C', and Dungeness crabs are steaming hot.",
@@ -192,7 +221,8 @@
       },
       {
         phase: "Leg 6: Bread & Garlic Lemon Butter",
-        zone: "Oven + Small Saucepan (12:45 PM)",
+        zone: "Oven + Small Saucepan",
+        offsetMinutes: 45,
         title: "Warm Baguette & Melt Garlic Butter",
         instruction: "While the shellfish finishes in the pot, warm your <strong>baguette</strong> in the oven or toaster oven for 5 minutes until crisp outside.<br><br>In a small saucepan over low heat, melt <strong>1 stick of butter</strong> with 2 minced garlic cloves and a squeeze of fresh lemon juice.",
         sensory: "Baguette crust is warm and crisp; butter is fully melted and fragrant with garlic and lemon.",
@@ -200,7 +230,8 @@
       },
       {
         phase: "Leg 7: Unload & Serve",
-        zone: "Off Heat / Platter (12:50 PM)",
+        zone: "Off Heat / Platter",
+        offsetMinutes: 50,
         title: "Pull Seafood from Boil & Plate Feast",
         instruction: "Turn off the burner. Use <strong>long kitchen tongs</strong> and a <strong>slotted spoon</strong> to lift the Dungeness crabs, Maine lobster, shrimp, clams, corn, potatoes, fennel, and mushrooms directly off the domed rack onto a large serving platter.<br><br>Ladle 2 cups of hot seasoned Old Bay broth into dipping bowls for the bread, scatter chopped <strong>Italian parsley</strong> and fresh <strong>lemon wedges</strong> over the top, and set out your Granite Ware mallets, crackers, shears, and picks.",
         sensory: "Platter is heaped with steaming seafood and tender veggies, garnished with bright green parsley and lemon.",
@@ -208,22 +239,15 @@
       }
     ];
 
+    const TOTAL_RECIPE_MINUTES = 60; // 50 min active boil + 10 min unloading/plating buffer before sitting down
+
     let currentStepIndex = 0;
     let timerInterval = null;
     let timerRemaining = 0;
     let isTimerRunning = false;
 
-    function playKitchenChime() {
-      try {
-        const synth = new Tone.PolySynth(Tone.Synth).toDestination();
-        const now = Tone.now();
-        synth.triggerAttackRelease(["E5", "G#5", "B5"], "8n", now);
-        synth.triggerAttackRelease(["B5", "E6"], "4n", now + 0.2);
-      } catch (e) {
-        console.warn(e);
-      }
-    }
-
+    const targetTimeInput = document.getElementById("targetTimeInput");
+    const kickoffTimeDisplay = document.getElementById("kickoffTimeDisplay");
     const stepCounter = document.getElementById("stepCounter");
     const progressBar = document.getElementById("progressBar");
     const stepCard = document.getElementById("stepCard");
@@ -239,6 +263,40 @@
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
 
+    function formatClockTime(totalMinutes) {
+      let mins = ((totalMinutes % 1440) + 1440) % 1440;
+      const h24 = Math.floor(mins / 60);
+      const m = mins % 60;
+      const ampm = h24 >= 12 ? "PM" : "AM";
+      const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+      return `${h12}:${String(m).padStart(2, "0")} ${ampm}`;
+    }
+
+    function getKickoffMinutes() {
+      const [hh, mm] = (targetTimeInput.value || "17:00").split(":").map(Number);
+      const targetMinutes = hh * 60 + mm;
+      return targetMinutes - TOTAL_RECIPE_MINUTES;
+    }
+
+    function updateScheduleTimes() {
+      const kickoff = getKickoffMinutes();
+      kickoffTimeDisplay.textContent = formatClockTime(kickoff);
+      const step = steps[currentStepIndex];
+      const legClock = formatClockTime(kickoff + step.offsetMinutes);
+      stepZoneTag.querySelector("span").textContent = `${step.zone} • ${legClock}`;
+    }
+
+    function playKitchenChime() {
+      try {
+        const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+        const now = Tone.now();
+        synth.triggerAttackRelease(["E5", "G#5", "B5"], "8n", now);
+        synth.triggerAttackRelease(["B5", "E6"], "4n", now + 0.2);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
     function renderStep() {
       const step = steps[currentStepIndex];
       stepCard.classList.remove("fade-enter");
@@ -249,10 +307,10 @@
       progressBar.style.width = `${((currentStepIndex + 1) / steps.length) * 100}%`;
 
       stepPhaseTag.textContent = step.phase;
-      stepZoneTag.querySelector("span").textContent = step.zone;
       stepTitle.textContent = step.title;
       stepInstruction.innerHTML = step.instruction;
       stepSensory.textContent = step.sensory;
+      updateScheduleTimes();
 
       if (step.timerSeconds > 0) {
         timerContainer.classList.remove("hidden");
@@ -313,6 +371,8 @@
       const s = timerRemaining % 60;
       timerDisplay.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
     }
+
+    targetTimeInput.addEventListener("change", updateScheduleTimes);
 
     prevBtn.addEventListener("click", () => {
       if (currentStepIndex > 0) {
