@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dungeness Crab, Lobster Tails, Shrimp & Manila Clam Boil | Chef Pacer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    .font-mono-numbers { font-family: 'JetBrains Mono', monospace; }
+    .fade-enter { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    input[type="time"]::-webkit-calendar-picker-indicator { filter: invert(0.8); cursor: pointer; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased pb-12">
+
+  <!-- TOP APP BAR -->
+  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 sm:px-6">
+    <div class="max-w-2xl mx-auto flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white transition">
+        <i data-lucide="chevron-left" class="w-4 h-4 text-cyan-400"></i>
+        <span>Recipe Hub</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <span id="wakeLockBadge" class="hidden text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20">Screen Awake</span>
+        <span class="text-xs font-mono text-cyan-400 bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">Seafood Pacer</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW -->
+  <main class="max-w-2xl mx-auto w-full px-4 sm:px-6 pt-5 flex-1 flex flex-col gap-4">
+
+    <!-- OVERVIEW CARD -->
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+      <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 mb-1">
+        Single-Pot Coastal Boil
+      </span>
+      <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">Dungeness Crab, Lobster Tails, Shrimp &amp; Manila Clam Boil</h2>
+      <p class="text-xs text-slate-400 mt-1">15.5-qt Granite Ware single-pot boil with 2 Maine lobster tails, 16/20 peeled &amp; deveined Gulf shrimp, baby red potatoes, fennel wedges, sweet corn, mushrooms, and garlic lemon butter.</p>
+
+      <!-- EXPERIENCE LEVEL SELECTOR (SCALES PREP LEGS ONLY) -->
+      <div class="mt-4 pt-3 border-t border-slate-800/60 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="gauge" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Prep Pace</span>
+        </div>
+        <div id="skillSelector" class="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800" role="group" aria-label="Kitchen Experience Level">
+          <button type="button" data-skill="beginner" class="skill-btn px-2.5 py-1 rounded-lg text-[11px] font-bold transition text-slate-400 hover:text-white">
+            Beginner (2x)
+          </button>
+          <button type="button" data-skill="intermediate" class="skill-btn px-2.5 py-1 rounded-lg text-[11px] font-bold transition text-slate-400 hover:text-white">
+            Intermediate (1.5x)
+          </button>
+          <button type="button" data-skill="advanced" class="skill-btn px-2.5 py-1 rounded-lg text-[11px] font-bold transition bg-cyan-600 text-white shadow">
+            Advanced (1x)
+          </button>
+        </div>
+      </div>
+
+      <!-- TARGET EAT TIME & LIVE DYNAMIC ETA BAR -->
+      <div class="mt-3 p-3 rounded-xl bg-slate-950/90 border border-slate-800 grid grid-cols-3 items-center gap-2">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 hidden sm:flex items-center justify-center text-cyan-400 shrink-0">
+            <i data-lucide="clock" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <label for="targetTimeInput" class="block text-[10px] font-bold uppercase tracking-wider text-slate-400">Target Eat</label>
+            <input id="targetTimeInput" type="time" value="13:00" class="bg-transparent text-xs sm:text-sm font-mono-numbers font-bold text-white focus:outline-none">
+          </div>
+        </div>
+
+        <div class="text-center border-x border-slate-800/80 px-2">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Start Leg 1 By</div>
+          <div id="kickoffTimeDisplay" class="text-xs sm:text-sm font-mono-numbers font-bold text-slate-200">--:--</div>
+        </div>
+
+        <div class="text-right">
+          <div id="etaLabel" class="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Planned ETA</div>
+          <div id="liveEtaDisplay" class="text-xs sm:text-sm font-mono-numbers font-extrabold text-teal-400">--:--</div>
+          <div id="etaDeltaDisplay" class="text-[10px] font-mono-numbers text-slate-400">On target</div>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-slate-800/60">
+        <div class="flex justify-between items-center text-[11px] font-semibold text-slate-400 mb-2">
+          <span>Meal Itinerary Cadence</span>
+          <span id="stepCounter" class="text-cyan-400 font-mono-numbers">Leg 1</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden flex p-0.5">
+          <div id="progressBar" class="bg-gradient-to-r from-cyan-500 to-teal-400 h-full rounded-full transition-all duration-300" style="width: 15%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRE-FLIGHT AUDIT ACCORDION -->
+    <details class="group bg-slate-900/60 border border-slate-800 rounded-xl overflow-hidden text-xs">
+      <summary class="px-4 py-3 flex items-center justify-between cursor-pointer text-slate-300 font-semibold select-none hover:bg-slate-800/50">
+        <div class="flex items-center gap-2">
+          <i data-lucide="clipboard-check" class="w-4 h-4 text-cyan-400"></i>
+          <span>Mise en Place &amp; Equipment Checklist</span>
+        </div>
+        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+      </summary>
+      <div class="px-4 pb-4 pt-2 border-t border-slate-800/80 grid sm:grid-cols-2 gap-4 text-slate-300">
+        <div>
+          <h4 class="font-bold text-[11px] uppercase tracking-wider text-slate-400 mb-2">Ingredients</h4>
+          <ul class="space-y-1.5">
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>2 Jumbo whole cooked Dungeness crabs</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>2 raw Maine lobster tails (split down top shell if desired)</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>1 lb live Manila clams</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>0.5 lb 16/20 peeled &amp; deveined Gulf shrimp (thawed/rinsed)</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>1 lb baby red potatoes &amp; 1 lb fennel bulb (6 wedges)</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>3 ears supersweet corn (halved) &amp; 0.5 lb whole cremini mushrooms</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>3.5–4 qts water, 1 cup dry white wine, 3–4 tbsp Old Bay</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>1 yellow onion, 1 bulb garlic, 2 lemons, Italian parsley</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400 mt-0.5 shrink-0"></i><span>1 stick butter &amp; crusty baguette</span></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold text-[11px] uppercase tracking-wider text-slate-400 mb-2">Hardware Setup</h4>
+          <ul class="space-y-1.5">
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>15.5-qt Granite Ware pot + lid + perforated insert (domed side up)</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Long kitchen tongs &amp; slotted spoon / spider strainer</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Granite Ware mallets, crackers, shears &amp; picks</span></li>
+            <li class="flex items-start gap-2"><i data-lucide="wrench" class="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0"></i><span>Large serving platter, broth dipping bowls &amp; small butter saucepan</span></li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- STEP RUNNER -->
+    <div id="stepCard" class="bg-gradient-to-b from-slate-900 to-slate-900/80 border border-slate-800 rounded-3xl p-5 sm:p-7 shadow-xl flex-1 flex flex-col justify-between fade-enter">
+      <div>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2">
+            <span id="stepPhaseTag" class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+              Leg 1
+            </span>
+            <span id="prepScaledBadge" class="hidden text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md bg-purple-500/15 text-purple-300 border border-purple-500/30">
+              Prep Scaled
+            </span>
+          </div>
+          <div id="stepZoneTag" class="flex items-center gap-1.5 text-xs font-medium text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-md border border-cyan-500/20">
+            <i data-lucide="flame" class="w-3.5 h-3.5"></i>
+            <span>Zone</span>
+          </div>
+        </div>
+
+        <h3 id="stepTitle" class="text-xl sm:text-2xl font-extrabold text-white tracking-tight mt-1"></h3>
+        <div id="stepInstruction" class="text-slate-300 text-sm sm:text-base leading-relaxed mt-3 space-y-2"></div>
+
+        <div class="mt-5 p-4 rounded-xl bg-slate-950/70 border border-slate-800 text-xs sm:text-sm">
+          <div class="flex items-center gap-2 font-bold text-cyan-400 mb-1.5">
+            <i data-lucide="eye" class="w-4 h-4"></i>
+            <span>Sensory Exit Criteria</span>
+          </div>
+          <p id="stepSensory" class="text-slate-300 leading-normal"></p>
+        </div>
+
+      </div>
+
+      <!-- TIMER SECTION -->
+      <div id="timerContainer" class="mt-6 pt-5 border-t border-slate-800/80">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-950/80 p-4 rounded-2xl border border-slate-800">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-cyan-400">
+              <i data-lucide="timer" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <div id="timerLabel" class="text-[10px] uppercase font-bold tracking-wider text-slate-400">Phase Timer</div>
+              <div id="timerDisplay" class="text-3xl font-mono-numbers font-bold text-white tracking-wider">00:00</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button id="timerToggleBtn" class="flex-1 sm:flex-initial px-5 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md shadow-cyan-950">
+              <i data-lucide="play" class="w-4 h-4"></i>
+              <span>Start</span>
+            </button>
+            <button id="timerResetBtn" class="px-3.5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition flex items-center justify-center">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            </button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- NAVIGATION -->
+      <div class="mt-6 pt-4 flex items-center justify-between gap-3">
+        <button id="prevBtn" class="px-4 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Previous</span>
+        </button>
+        <button id="nextBtn" class="flex-1 sm:flex-initial px-6 py-3 bg-gradient-to-r from-cyan-600 to-teal-500 hover:from-cyan-500 hover:to-teal-400 text-white rounded-xl text-xs font-extrabold tracking-wide transition flex items-center justify-center gap-2 shadow-lg shadow-cyan-950/60">
+          <span>Complete Leg &amp; Advance</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const steps = [
+      {
+        phase: "Leg 1: Start Pot & Prep Veggies",
+        zone: "Stove + Prep Counter",
+        isPrep: true,
+        baseDurationMinutes: 20,
+        timerSeconds: 1200,
+        title: "Start Seasoned Broth, Purge Clams & Prep",
+        instruction: "<strong>First, start the pot:</strong> Place the perforated Granite Ware insert <strong>upside down (domed side up)</strong> in the 15.5-quart pot. Add <strong>3.5 to 4 quarts water</strong>, <strong>1 cup dry white wine</strong>, and <strong>3 to 4 tbsp Old Bay</strong>. Cover with the lid over <strong>Medium heat</strong> (if Beginner/Intermediate) or <strong>High heat</strong> (if Advanced) so it heats passively while you prep.<br><br><strong>Next, purge &amp; prep:</strong> Soak <strong>1 lb Manila clams</strong> in cold salted water (1 tbsp salt). Rinse <strong>0.5 lb 16/20 peeled &amp; deveined Gulf shrimp</strong> and optionally snip down the top shell of the <strong>2 Maine lobster tails</strong> (keep both chilled). Scrub <strong>1 lb baby red potatoes</strong> (halve larger ones), cut <strong>1 lb fennel bulb</strong> into 6 wedges through the root, halve <strong>3 ears corn</strong>, quarter <strong>yellow onion</strong>, smash <strong>5–6 garlic cloves</strong>, halve <strong>1 lemon</strong>, wipe <strong>0.5 lb cremini mushrooms</strong>, and chop <strong>Italian parsley</strong>.<br><br><em>Tip: With 10 minutes left in your prep timer, drop the onion, garlic, and squeezed lemon halves into the pot and turn the burner to <strong>High</strong>.</em>",
+        sensory: "Seasoned broth is hot and approaching a rolling boil; clams are rinsed and tightly closed; all veggies and shellfish are prepped beside the stove."
+      },
+      {
+        phase: "Leg 2: Full Rolling Boil",
+        zone: "15.5-Qt Stock Pot",
+        isPrep: false,
+        baseDurationMinutes: 5,
+        timerSeconds: 300,
+        title: "Verify Rolling Boil & Aromatics",
+        instruction: "Make sure the quartered onion, smashed garlic cloves, and squeezed lemon halves are in the pot and the burner is on <strong>High</strong> with the lid on until the seasoned broth hits a vigorous rolling boil.<br><br><em>(If it is already at a full rolling boil when you finish Leg 1, tap Complete Leg &amp; Advance right away!)</em>",
+        sensory: "Broth reaches a vigorous, fragrant rolling boil with Old Bay and citrus aromatics."
+      },
+      {
+        phase: "Leg 3: Hardy Veggies",
+        zone: "Rolling Boil",
+        isPrep: false,
+        baseDurationMinutes: 8,
+        timerSeconds: 480,
+        title: "Simmer Potatoes & Fennel Wedges",
+        instruction: "Drop the <strong>baby red potatoes</strong> and <strong>fennel wedges</strong> into the boiling broth so they rest on the raised domed plate.<br><br>Cover with the lid and maintain a steady boil for <strong>8 minutes</strong> to give the denser vegetables a head start.",
+        sensory: "Potatoes and fennel are submerged in steady boiling broth and beginning to soften."
+      },
+      {
+        phase: "Leg 4: Corn & Mushrooms",
+        zone: "Covered Boil",
+        isPrep: false,
+        baseDurationMinutes: 5,
+        timerSeconds: 300,
+        title: "Add Corn Halves & Cremini Mushrooms",
+        instruction: "Add the <strong>corn halves</strong> and whole <strong>cremini mushrooms</strong> to the pot.<br><br>Cover and boil for <strong>5 minutes</strong> so the corn turns tender-crisp and the mushrooms soak up the Old Bay broth. <em>(Hold your 2 raw lobster tails for Leg 5 so they don't overcook.)</em>",
+        sensory: "Corn turns bright golden yellow and mushrooms darken as they absorb broth."
+      },
+      {
+        phase: "Leg 5: Final Shellfish Boil",
+        zone: "Covered Boil/Steam",
+        isPrep: false,
+        baseDurationMinutes: 6,
+        timerSeconds: 330,
+        title: "Steam Lobster Tails, Clams, Crab & Shrimp",
+        instruction: "Layer the <strong>2 Maine lobster tails</strong> (tucked down near the bubbling surface), <strong>1 lb Manila clams</strong>, and <strong>2 pre-cooked Dungeness crabs</strong> on top of the veggies, cover tightly, and steam/boil for <strong>2 minutes</strong>.<br><br>Lift the lid, scatter the <strong>0.5 lb 16/20 peeled &amp; deveined Gulf shrimp</strong> right on top, clamp the lid shut, and cook <strong>3 to 4 minutes more</strong> (5–6 min total for tails; 3–4 min for shrimp). Discard any clams that fail to open.",
+        sensory: "Lobster tail shells turn bright red with opaque white meat, Manila clams pop wide open, peeled shrimp curl into a loose pink 'C', and crabs are steaming hot."
+      },
+      {
+        phase: "Leg 6: Bread & Garlic Lemon Butter",
+        zone: "Oven + Small Saucepan",
+        isPrep: false,
+        baseDurationMinutes: 5,
+        timerSeconds: 300,
+        title: "Warm Baguette & Melt Garlic Butter",
+        instruction: "Warm your <strong>baguette</strong> in the oven or toaster oven for 5 minutes until crisp outside.<br><br>In a small saucepan over low heat, melt <strong>1 stick of butter</strong> with 2 minced garlic cloves and a squeeze of fresh lemon juice.",
+        sensory: "Baguette crust is warm and crisp; butter is fully melted and fragrant with garlic and lemon."
+      },
+      {
+        phase: "Leg 7: Unload & Serve",
+        zone: "Off Heat / Platter",
+        isPrep: false,
+        baseDurationMinutes: 5,
+        timerSeconds: 0,
+        title: "Pull Seafood from Boil & Plate Feast",
+        instruction: "Turn off the burner immediately so the lobster tails and deveined shrimp don't overcook in residual heat. Use <strong>long kitchen tongs</strong> and a <strong>slotted spoon</strong> to lift the Dungeness crabs, lobster tails, peeled shrimp, clams, corn, potatoes, fennel, and mushrooms directly off the domed rack onto a large serving platter.<br><br>Ladle 2 cups of hot seasoned Old Bay broth into dipping bowls for the bread, scatter chopped <strong>Italian parsley</strong> and fresh <strong>lemon wedges</strong> over the top, and set out your Granite Ware mallets, crackers, shears, and picks.",
+        sensory: "Platter is heaped with steaming seafood, bright red lobster tails, plump pink shrimp, and tender veggies, garnished with parsley and lemon."
+      }
+    ];
+
+    const SKILL_MULTIPLIERS = {
+      beginner: 2.0,
+      intermediate: 1.5,
+      advanced: 1.0
+    };
+
+    let currentSkill = localStorage.getItem("chefPacerSkill") || "beginner";
+    let currentStepIndex = 0;
+    let timerInterval = null;
+    let timerRemaining = 0;
+    let timerEndTime = null;
+    let isTimerRunning = false;
+    let hasStartedCooking = false;
+    let legEnteredAt = null;
+    let extraAddedMinutes = 0;
+    let wakeLock = null;
+
+    const wakeLockBadge = document.getElementById("wakeLockBadge");
+    const skillBtns = document.querySelectorAll(".skill-btn");
+    const targetTimeInput = document.getElementById("targetTimeInput");
+    const kickoffTimeDisplay = document.getElementById("kickoffTimeDisplay");
+    const etaLabel = document.getElementById("etaLabel");
+    const liveEtaDisplay = document.getElementById("liveEtaDisplay");
+    const etaDeltaDisplay = document.getElementById("etaDeltaDisplay");
+    const stepCounter = document.getElementById("stepCounter");
+    const progressBar = document.getElementById("progressBar");
+    const stepCard = document.getElementById("stepCard");
+    const stepPhaseTag = document.getElementById("stepPhaseTag");
+    const prepScaledBadge = document.getElementById("prepScaledBadge");
+    const stepZoneTag = document.getElementById("stepZoneTag");
+    const stepTitle = document.getElementById("stepTitle");
+    const stepInstruction = document.getElementById("stepInstruction");
+    const stepSensory = document.getElementById("stepSensory");
+    const timerContainer = document.getElementById("timerContainer");
+    const timerLabel = document.getElementById("timerLabel");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const timerToggleBtn = document.getElementById("timerToggleBtn");
+    const timerResetBtn = document.getElementById("timerResetBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function getStepDurationMinutes(step) {
+      const mult = step.isPrep ? SKILL_MULTIPLIERS[currentSkill] : 1.0;
+      return step.baseDurationMinutes * mult;
+    }
+
+    function getStepTimerSeconds(step) {
+      if (!step.timerSeconds) return 0;
+      const mult = step.isPrep ? SKILL_MULTIPLIERS[currentSkill] : 1.0;
+      return Math.round(step.timerSeconds * mult);
+    }
+
+    function getTotalRecipeMinutes() {
+      return steps.reduce((sum, s) => sum + getStepDurationMinutes(s), 0);
+    }
+
+    function getElapsedMinutesBeforeStep(index) {
+      let sum = 0;
+      for (let i = 0; i < index; i++) {
+        sum += getStepDurationMinutes(steps[i]);
+      }
+      return sum;
+    }
+
+    function getRemainingMinutesFromStep(index) {
+      let sum = 0;
+      for (let i = index; i < steps.length; i++) {
+        sum += getStepDurationMinutes(steps[i]);
+      }
+      return sum;
+    }
+
+    function updateSkillButtonsUI() {
+      skillBtns.forEach(btn => {
+        const isSelected = btn.dataset.skill === currentSkill;
+        if (isSelected) {
+          btn.className = "skill-btn px-2.5 py-1 rounded-lg text-[11px] font-bold transition bg-cyan-600 text-white shadow";
+        } else {
+          btn.className = "skill-btn px-2.5 py-1 rounded-lg text-[11px] font-bold transition text-slate-400 hover:text-white";
+        }
+      });
+    }
+
+    async function requestWakeLock() {
+      try {
+        if ("wakeLock" in navigator && !wakeLock) {
+          wakeLock = await navigator.wakeLock.request("screen");
+          wakeLockBadge.classList.remove("hidden");
+          wakeLock.addEventListener("release", () => {
+            wakeLock = null;
+            wakeLockBadge.classList.add("hidden");
+          });
+        }
+      } catch (e) {
+        console.warn("Wake Lock unavailable:", e);
+      }
+    }
+
+    async function releaseWakeLock() {
+      try {
+        if (wakeLock) {
+          await wakeLock.release();
+          wakeLock = null;
+          wakeLockBadge.classList.add("hidden");
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function formatClockTime(totalMinutes) {
+      let mins = Math.round(((totalMinutes % 1440) + 1440) % 1440);
+      const h24 = Math.floor(mins / 60);
+      const m = mins % 60;
+      const ampm = h24 >= 12 ? "PM" : "AM";
+      const h12 = h24 % 12 === 0 ? 12 : h24 % 12;
+      return `${h12}:${String(m).padStart(2, "0")} ${ampm}`;
+    }
+
+    function getTargetMinutes() {
+      const [hh, mm] = (targetTimeInput.value || "13:00").split(":").map(Number);
+      return hh * 60 + mm;
+    }
+
+    function getNowMinutes() {
+      const now = new Date();
+      return now.getHours() * 60 + now.getMinutes() + now.getSeconds() / 60;
+    }
+
+    function updateScheduleTimes() {
+      const targetMins = getTargetMinutes();
+      const totalRecipeMins = getTotalRecipeMinutes();
+      const kickoff = targetMins - totalRecipeMins;
+      kickoffTimeDisplay.textContent = formatClockTime(kickoff);
+
+      const step = steps[currentStepIndex];
+
+      if (!hasStartedCooking && currentStepIndex === 0 && !isTimerRunning) {
+        etaLabel.textContent = "Planned ETA";
+        liveEtaDisplay.textContent = formatClockTime(targetMins);
+        liveEtaDisplay.className = "text-xs sm:text-sm font-mono-numbers font-extrabold text-teal-400";
+        etaDeltaDisplay.textContent = "On target";
+        etaDeltaDisplay.className = "text-[10px] font-mono-numbers text-slate-400";
+        const legClock = formatClockTime(kickoff + getElapsedMinutesBeforeStep(currentStepIndex));
+        stepZoneTag.querySelector("span").textContent = `${step.zone} • ${legClock}`;
+      } else {
+        const remainingMinutes = getRemainingMinutesFromStep(currentStepIndex) + extraAddedMinutes;
+        const anchorNow = legEnteredAt !== null ? legEnteredAt : getNowMinutes();
+        const estimatedFinish = anchorNow + remainingMinutes;
+
+        etaLabel.textContent = "Live Meal ETA";
+        liveEtaDisplay.textContent = formatClockTime(estimatedFinish);
+
+        const diff = Math.round(estimatedFinish - targetMins);
+        if (diff === 0) {
+          liveEtaDisplay.className = "text-xs sm:text-sm font-mono-numbers font-extrabold text-teal-400";
+          etaDeltaDisplay.textContent = "Right on target";
+          etaDeltaDisplay.className = "text-[10px] font-mono-numbers text-teal-400";
+        } else if (diff < 0) {
+          liveEtaDisplay.className = "text-xs sm:text-sm font-mono-numbers font-extrabold text-emerald-400";
+          etaDeltaDisplay.textContent = `${Math.abs(diff)}m ahead of target`;
+          etaDeltaDisplay.className = "text-[10px] font-mono-numbers text-emerald-400";
+        } else {
+          liveEtaDisplay.className = "text-xs sm:text-sm font-mono-numbers font-extrabold text-amber-400";
+          etaDeltaDisplay.textContent = `+${diff}m past target`;
+          etaDeltaDisplay.className = "text-[10px] font-mono-numbers text-amber-400";
+        }
+
+        stepZoneTag.querySelector("span").textContent = `${step.zone} • Started ${formatClockTime(anchorNow)}`;
+      }
+    }
+
+    function playKitchenChime() {
+      try {
+        const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+        const now = Tone.now();
+        synth.triggerAttackRelease(["E5", "G#5", "B5"], "8n", now);
+        synth.triggerAttackRelease(["B5", "E6"], "4n", now + 0.2);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
+    function renderStep() {
+      const step = steps[currentStepIndex];
+      stepCard.classList.remove("fade-enter");
+      void stepCard.offsetWidth;
+      stepCard.classList.add("fade-enter");
+
+      stepCounter.textContent = `Leg ${currentStepIndex + 1} of ${steps.length}`;
+      progressBar.style.width = `${((currentStepIndex + 1) / steps.length) * 100}%`;
+
+      stepPhaseTag.textContent = step.phase;
+      if (step.isPrep && SKILL_MULTIPLIERS[currentSkill] > 1.0) {
+        prepScaledBadge.classList.remove("hidden");
+        prepScaledBadge.textContent = `Prep Pace ${SKILL_MULTIPLIERS[currentSkill]}x`;
+      } else {
+        prepScaledBadge.classList.add("hidden");
+      }
+
+      stepTitle.textContent = step.title;
+      stepInstruction.innerHTML = step.instruction;
+      stepSensory.textContent = step.sensory;
+      updateScheduleTimes();
+
+      
+
+      const scaledSeconds = getStepTimerSeconds(step);
+      if (scaledSeconds > 0) {
+        timerContainer.classList.remove("hidden");
+        timerLabel.textContent = step.isPrep ? `Prep Timer (${currentSkill})` : "Cook Timer (Fixed)";
+        timerRemaining = scaledSeconds;
+        timerEndTime = null;
+        updateTimerDisplay();
+      } else {
+        timerContainer.classList.add("hidden");
+        timerRemaining = 0;
+        timerEndTime = null;
+      }
+
+      prevBtn.disabled = currentStepIndex === 0;
+      if (currentStepIndex === steps.length - 1) {
+        nextBtn.innerHTML = `<span>Plate &amp; Serve</span> <i data-lucide="check" class="w-4 h-4"></i>`;
+      } else {
+        nextBtn.innerHTML = `<span>Complete Leg &amp; Advance</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+      }
+
+      lucide.createIcons();
+    }
+
+    function syncTimerFromClock() {
+      if (!isTimerRunning || !timerEndTime) return;
+      const secsLeft = Math.max(0, Math.ceil((timerEndTime - Date.now()) / 1000));
+      timerRemaining = secsLeft;
+      updateTimerDisplay();
+      if (timerRemaining <= 0) {
+        pauseTimer();
+        playKitchenChime();
+      }
+    }
+
+    function toggleTimer() {
+      if (isTimerRunning) pauseTimer();
+      else startTimer();
+    }
+
+    function startTimer() {
+      if (timerRemaining <= 0) return;
+      if (!hasStartedCooking) {
+        hasStartedCooking = true;
+        legEnteredAt = getNowMinutes();
+        updateScheduleTimes();
+      }
+      isTimerRunning = true;
+      timerEndTime = Date.now() + timerRemaining * 1000;
+      requestWakeLock();
+      timerToggleBtn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i><span>Pause</span>`;
+      timerToggleBtn.classList.replace("bg-cyan-600", "bg-amber-600");
+      clearInterval(timerInterval);
+      timerInterval = setInterval(syncTimerFromClock, 250);
+      lucide.createIcons();
+    }
+
+    function pauseTimer() {
+      isTimerRunning = false;
+      timerEndTime = null;
+      clearInterval(timerInterval);
+      releaseWakeLock();
+      timerToggleBtn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i><span>Start</span>`;
+      timerToggleBtn.classList.replace("bg-amber-600", "bg-cyan-600");
+      lucide.createIcons();
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      extraAddedMinutes = 0;
+      timerRemaining = getStepTimerSeconds(steps[currentStepIndex]);
+      timerEndTime = null;
+      updateTimerDisplay();
+      updateScheduleTimes();
+    }
+
+    function updateTimerDisplay() {
+      const m = Math.floor(timerRemaining / 60);
+      const s = timerRemaining % 60;
+      timerDisplay.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    skillBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentSkill = btn.dataset.skill;
+        localStorage.setItem("chefPacerSkill", currentSkill);
+        updateSkillButtonsUI();
+        if (!isTimerRunning) {
+          timerRemaining = getStepTimerSeconds(steps[currentStepIndex]);
+          updateTimerDisplay();
+        }
+        renderStep();
+      });
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && isTimerRunning) {
+        syncTimerFromClock();
+        requestWakeLock();
+      }
+    });
+
+    targetTimeInput.addEventListener("change", updateScheduleTimes);
+
+    prevBtn.addEventListener("click", () => {
+      if (currentStepIndex > 0) {
+        currentStepIndex--;
+        extraAddedMinutes = 0;
+        legEnteredAt = getNowMinutes();
+        resetTimer();
+        renderStep();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (currentStepIndex < steps.length - 1) {
+        hasStartedCooking = true;
+        extraAddedMinutes = 0;
+        currentStepIndex++;
+        legEnteredAt = getNowMinutes();
+        resetTimer();
+        renderStep();
+      } else {
+        releaseWakeLock();
+        alert("Dinner is ready! Enjoy the Dungeness crab, lobster tails, shrimp, and clam boil.");
+      }
+    });
+
+    timerToggleBtn.addEventListener("click", toggleTimer);
+    timerResetBtn.addEventListener("click", resetTimer);
+    
+    
+
+    updateSkillButtonsUI();
+    renderStep();
+  </script>
+</body>
+</html>
